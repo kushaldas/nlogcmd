@@ -54,4 +54,11 @@ You can use these in combination.
 select format=php date=yesterday
 ```
 
+You can also use `from` and `till` to choose a date range. Dates must be given
+in the format of `year-month-day`, example `2020-05-01`. If you mention only
+the `from`, then it counts till today.
+
+```
+select from=2020-04-01 till=2020-04-30
+```
 

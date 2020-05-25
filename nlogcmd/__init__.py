@@ -84,14 +84,31 @@ class REPL(Cmd):
         ]
         # Now extra filter fields
 
+        date_match = datetime.datetime.today()
         if "date" in default:
             value = default["date"]
-            date_match = datetime.datetime.today()
             if value == "today":
                 self.work_data = [rec for rec in self.work_data if rec["time"].date() == date_match.date()]
             elif value == "yesterday":
                 date_match = date_match - datetime.timedelta(days=1)
                 self.work_data = [rec for rec in self.work_data if rec["time"].date() == date_match.date()]
+            return
+        # Format of the day 2020-05-20
+        if "from" in default:
+            year, month, day = (int(value) for value in default["from"].split("-"))
+            fromdate = datetime.datetime(year, month, day)
+            if "till" in default:
+                year, month, day = (int(value) for value in default["till"].split("-"))
+                tilldate = datetime.datetime(year, month, day)
+            else:
+                tilldate = datetime.datetime.today()
+            # Now find those values
+            result = []
+            for rec in self.work_data:
+                if rec["time"].date() >= fromdate.date() and rec["time"].date() <= tilldate.date():
+                    result.append(rec)
+
+            self.work_data = result
 
 
 
